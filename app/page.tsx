@@ -45,31 +45,36 @@ export default function Home() {
 
   return (
     <main
-      className="flex min-h-screen flex-col items-center justify-center p-24"
-      onClick={(e) => {
-        if (inpRef.current && inpRef.current.contains(e.target)) {
-          return;
-        }
-
-        if (todo) {
+      className="flex min-h-screen flex-col justify-between align-middle p-4"
+    >
+      <div
+        className="absolute top-0 bottom-0 left-0 right-0"
+        onClick={(e) => {
+          // if (inpRef.current && inpRef.current.contains(e.target)) {
+          //   return;
+          // }
+  
+          // if (todo) {
+          //   setTimeout(() => {
+          //     if (inpRef.current) {
+          //       inpRef.current.focus();
+          //     }
+          //   }, 0)
+  
+          //   return;
+          // }
+  
+          setShowInput(prevVal => !prevVal);
+  
           setTimeout(() => {
             if (inpRef.current) {
               inpRef.current.focus();
             }
           }, 0)
+        }}
+      >
 
-          return;
-        }
-
-        setShowInput(prevVal => !prevVal);
-
-        setTimeout(() => {
-          if (inpRef.current) {
-            inpRef.current.focus();
-          }
-        }, 0)
-      }}
-    >
+      </div>
       {todos.length > 0 &&
         <div
           className="todos-list"
@@ -82,23 +87,29 @@ export default function Home() {
       }
 
       {showInput &&
-        <input
-          ref={inpRef}
-          type="text"
-          value={todo}
-          onChange={(e) => {
-            setDodo(e.target.value)
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              addTodo(todo);
-              
-              setDodo('');
-              setShowInput(false);
-            }
-          }}
-          style={{ color: 'black' }}
-        />
+        <div className="absolute top-1/2 left-4 right-4 flex">
+          <input
+            ref={inpRef}
+            className="text-xl w-full rounded-s"
+            type="text"
+            value={todo}
+            onChange={(e) => {
+              setDodo(e.target.value)
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                addTodo(todo);
+                
+                setDodo('');
+                setShowInput(false);
+              }
+            }}
+            style={{ color: 'black' }}
+          />
+          <button className="w-12 bg-slate-400 rounded-e">
+            +
+          </button>
+        </div>
       }
       
     </main>
