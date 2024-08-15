@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { Input } from "postcss";
 import { useEffect, useRef, useState } from "react";
+import { API } from "./lib/constants";
 
 export default function Home() {
   const pathname = usePathname();
@@ -15,14 +16,9 @@ export default function Home() {
   const [isFirstReq, setIsFirstReq] = useState(false);
 
   useEffect(() => {
-    // console.log('pathname', pathname, location)
-    if (isFirstReq) {
-      return;
-    }
-    
     setIsFirstReq(() => true);
     
-    axios.get('http://localhost:3001/todos')
+    axios.get(`${API}/todos`)
       .then(res => {
         setTodos(res.data)
       })
@@ -32,7 +28,7 @@ export default function Home() {
   }, [])
 
   async function addTodo(val: string) {
-    axios.post('http://localhost:3001/todo', { todo })
+    axios.post(`${API}/todo`, { todo })
       .then(res => {
         setTodos(res.data)
       })
