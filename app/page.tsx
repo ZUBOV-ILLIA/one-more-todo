@@ -37,60 +37,42 @@ export default function Home() {
         setTodos(res.data)
       })
       .catch(err => {
-        // console.log('err', err)
+        console.log('err', err)
       })
   }
 
-  console.log(todo)
+  function mainTouch() {
+    setShowInput(prevVal => !prevVal);
+
+    
+    setTimeout(() => {
+      if (inpRef.current) {
+        inpRef.current.click();
+      }
+    }, 100)
+  }
 
   return (
     <main
       className="flex min-h-screen flex-col justify-between align-middle p-4"
     >
-      <div
-        className="absolute top-0 bottom-0 left-0 right-0"
-        onClick={(e) => {
-          // if (inpRef.current && inpRef.current.contains(e.target)) {
-          //   return;
-          // }
-  
-          // if (todo) {
-          //   setTimeout(() => {
-          //     if (inpRef.current) {
-          //       inpRef.current.focus();
-          //     }
-          //   }, 0)
-  
-          //   return;
-          // }
-  
-          setShowInput(prevVal => !prevVal);
-  
-          setTimeout(() => {
-            if (inpRef.current) {
-              inpRef.current.focus();
-            }
-          }, 0)
-        }}
-      >
-
-      </div>
+      <div className="absolute top-0 bottom-0 left-0 right-0" onClick={mainTouch}></div>
       {todos.length > 0 &&
         <div
-          className="todos-list"
+          className="todos-list z-10"
           style={{ color: 'white', marginBottom: 24 }}
         >
           {todos.map((todo, index) => (
-            <div key={index}>{todo}</div>
+            <div key={index} className="mb-2 pt-2 border-t border-t-slate-400 first:border-0">{todo}</div>
           ))}
         </div>
       }
 
-      {showInput &&
-        <div className="absolute top-1/2 left-4 right-4 flex">
+      {/* {showInput && */}
+        <div className="sticky top-3/4 left-4 right-4 flex">
           <input
             ref={inpRef}
-            className="text-xl w-full rounded-s"
+            className="text-xl w-full rounded-s outline-none pl-2"
             type="text"
             value={todo}
             onChange={(e) => {
@@ -110,7 +92,7 @@ export default function Home() {
             +
           </button>
         </div>
-      }
+      {/* } */}
       
     </main>
   );
