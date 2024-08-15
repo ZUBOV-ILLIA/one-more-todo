@@ -10,19 +10,36 @@ export default function Home() {
   const pathname = usePathname();
   const inpRef = useRef<any>(null);
   const [todo, setDodo] = useState('');
+  const [todos, setTodos] = useState<string[]>([]);
   const [showInput, setShowInput] = useState(false);
+  const [isFirstReq, setIsFirstReq] = useState(false);
 
   useEffect(() => {
-    console.log('pathname', pathname, location)
-
-    axios.get('http://localhost:3001/123?userId=1')
+    // console.log('pathname', pathname, location)
+    if (isFirstReq) {
+      return;
+    }
+    
+    setIsFirstReq(() => true);
+    
+    axios.get('http://localhost:3001/todos')
       .then(res => {
-        console.log('res', res)
+        setTodos(res.data)
+      })
+      .catch(err => {
+        console.log('err', err)
+      })
+  }, [])
+
+  async function addTodo(val: string) {
+    axios.post('http://localhost:3001/todo', { todo })
+      .then(res => {
+        setTodos(res.data)
       })
       .catch(err => {
         // console.log('err', err)
       })
-  }, [])
+  }
 
   console.log(todo)
 
@@ -53,6 +70,17 @@ export default function Home() {
         }, 0)
       }}
     >
+      {todos.length > 0 &&
+        <div
+          className="todos-list"
+          style={{ color: 'white', marginBottom: 24 }}
+        >
+          {todos.map((todo, index) => (
+            <div key={index}>{todo}</div>
+          ))}
+        </div>
+      }
+
       {showInput &&
         <input
           ref={inpRef}
@@ -61,7 +89,15 @@ export default function Home() {
           onChange={(e) => {
             setDodo(e.target.value)
           }}
-          style={{ color: 'red' }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              addTodo(todo);
+              
+              setDodo('');
+              setShowInput(false);
+            }
+          }}
+          style={{ color: 'black' }}
         />
       }
       
