@@ -57,37 +57,36 @@ export default function Home() {
       <div className="absolute top-0 bottom-0 left-0 right-0"></div>
       {todos.length > 0 &&
         <div
-          className="todos-list z-10"
+          className="todos-list"
           style={{ color: 'white', marginBottom: 24 }}
         >
           {todos.map((todo, index) => (
-            // <div key={index} className="mb-2 pt-2 border-t border-t-slate-400 first:border-0">
-            //   {todo.title}
-            // </div>
-
             <Todo key={todo.id} todo={todo} />
           ))}
         </div>
       }
 
-      <div className="sticky top-3/4 left-4 right-4 flex">
-        <input
-          ref={inpRef}
-          className="text-xl w-full rounded-s outline-none pl-2"
-          type="text"
-          value={todo?.title}
-          onChange={e => setTodo({ ...todo, title: e.target.value })}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') createTodo();
-          }}
-          style={{ color: 'black' }}
-        />
-        <button
-          className="w-12 bg-slate-400 rounded-e"
-          onClick={createTodo}
-        >
-          +
-        </button>
+      <div className="sticky bottom-0 left-4 right-4 bg-black pt-3 pb-6">
+
+        <label htmlFor="todoInput" className="flex">
+          <input
+            ref={inpRef}
+            className="text-xl w-full rounded-s outline-none pl-2"
+            type="text"
+            name="todoInput"
+            value={todo?.title}
+            onChange={e => setTodo({ ...todo, title: e.target.value })}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') createTodo();
+            }}
+            style={{ color: 'black' }}
+          />
+          <div
+            className="inline-flex justify-center items-center w-16 h-16 bg-slate-400 rounded-full text-4xl pb-1"
+          >
+            +
+          </div>
+        </label>
       </div>
 
     </main>
