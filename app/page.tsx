@@ -12,7 +12,6 @@ export default function Home() {
   const inpRef = useRef<any>(null);
   const [todo, setDodo] = useState('');
   const [todos, setTodos] = useState<string[]>([]);
-  const [showInput, setShowInput] = useState(false);
   const [isFirstReq, setIsFirstReq] = useState(false);
 
   useEffect(() => {
@@ -28,6 +27,8 @@ export default function Home() {
   }, [])
 
   async function addTodo(val: string) {
+    if (!val.trim()) return;
+
     axios.post(`${API}/todo`, { todo })
       .then(res => {
         setTodos(res.data)
@@ -38,9 +39,6 @@ export default function Home() {
   }
 
   function mainTouch() {
-    setShowInput(prevVal => !prevVal);
-
-    
     setTimeout(() => {
       if (inpRef.current) {
         inpRef.current.click();
@@ -79,7 +77,6 @@ export default function Home() {
                 addTodo(todo);
                 
                 setDodo('');
-                setShowInput(false);
               }
             }}
             style={{ color: 'black' }}
