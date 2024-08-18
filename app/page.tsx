@@ -40,7 +40,7 @@ export default function Home() {
       .then(res => {
         console.log(res);
 
-        setTodos([...todos, res.data]);
+        setTodos([res.data, ...todos]);
         setTodo({ userId: 1, id: '', title: '', completed: false });
         setIsVisibleCreateTodo(false);
       })
@@ -53,7 +53,6 @@ export default function Home() {
     <main
       className="flex min-h-screen flex-col justify-between align-middle p-4"
     >
-      <div className="absolute top-0 bottom-0 left-0 right-0"></div>
       {todos.length > 0 &&
         <div
           className="todos-list"
@@ -72,6 +71,7 @@ export default function Home() {
         +
       </div>
 
+      {/* background */}
       <div
         className={`duration-300 ${isVisibleCreateTodo ? 'opacity-50' : 'opacity-0 invisible'} fixed top-0 bottom-0 left-0 right-0 flex bg-black`}
         onClick={() => setIsVisibleCreateTodo(false)}

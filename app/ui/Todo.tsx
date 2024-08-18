@@ -11,10 +11,10 @@ export default function Todo({ todo }: Props) {
 
   return (
     <div className="mb-0.5 p-3 flex bg-neutral-800 text-slate-100 rounded justify-between">
-      <div>
+      <div className="flex">
         <input
           type="checkbox"
-          className="mr-2"
+          className="mr-2 self-start mt-1.5"
           checked={isChecked}
           onChange={() => setIsChecked(!isChecked)}
         />
