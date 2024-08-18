@@ -15,11 +15,8 @@ export default function Home() {
   const inpRef = useRef<any>(null);
   const [todo, setTodo] = useState<TodoType>({ userId: 1, id: '', title: '', completed: false });
   const [todos, setTodos] = useState<TodoType[]>([]);
-  const [isFirstReq, setIsFirstReq] = useState(false);
 
   useEffect(() => {
-    setIsFirstReq(() => true);
-
     axios.get(`${API}/todos`)
       .then(res => {
         console.log(res.data);
@@ -66,9 +63,14 @@ export default function Home() {
         </div>
       }
 
-      <div className="sticky bottom-0 left-4 right-4 bg-black pt-3 pb-6">
+      <div
+        className="fixed bottom-4 right-2 inline-flex justify-center items-center w-16 h-16  bg-indigo-700 text-black rounded-full text-4xl pb-1"
+      >
+        +
+      </div>
 
-        <label htmlFor="todoInput" className="flex">
+      {/* <div className="sticky bottom-0 left-0 right-0 bg-black pt-3 pb-6">
+
           <input
             ref={inpRef}
             className="text-xl w-full rounded-s outline-none pl-2"
@@ -81,13 +83,7 @@ export default function Home() {
             }}
             style={{ color: 'black' }}
           />
-          <div
-            className="inline-flex justify-center items-center w-16 h-16 bg-slate-400 rounded-full text-4xl pb-1"
-          >
-            +
-          </div>
-        </label>
-      </div>
+      </div> */}
 
     </main>
   );
