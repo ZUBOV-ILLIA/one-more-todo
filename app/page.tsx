@@ -9,12 +9,14 @@ import { API } from "./lib/constants";
 import { TodoType } from "./types/definitions";
 import { v4 as uuidv4 } from 'uuid';
 import Todo from "./ui/Todo";
+import Accordeon from "./ui/Accordeon";
 
 export default function Home() {
   const pathname = usePathname();
   const inpRef = useRef<any>(null);
   const [todo, setTodo] = useState<TodoType>({ userId: 1, id: '', title: '', completed: false });
   const [todos, setTodos] = useState<TodoType[]>([]);
+  const [completedTodos, setCompletedTodos] = useState<TodoType[]>([]);
   const [isVisibleCreateTodo, setIsVisibleCreateTodo] = useState(false);
 
   useEffect(() => {
@@ -53,16 +55,25 @@ export default function Home() {
     <main
       className="flex min-h-screen flex-col justify-between align-middle p-4"
     >
+      {/* Todos List */}
       {todos.length > 0 &&
-        <div
-          className="todos-list"
-          style={{ color: 'white', marginBottom: 24 }}
-        >
+        <div className="todos-list">
           {todos.map((todo, index) => (
             <Todo key={todo.id} todo={todo} />
           ))}
         </div>
       }
+
+      {/* Completed Todos List */}
+      <Accordeon title="Завершенные">
+      {todos.length > 0 &&
+          <div>
+            {todos.map((todo, index) => (
+              <Todo key={todo.id} todo={todo} />
+            ))}
+          </div>
+        }
+      </Accordeon>
 
       <div
         className={`duration-300 ${isVisibleCreateTodo ? 'opacity-0 invisible translate-x-11' : ''} fixed bottom-4 right-2 inline-flex justify-center items-center w-16 h-16  bg-indigo-700 text-black rounded-full text-4xl pb-1`}
