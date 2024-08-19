@@ -65,14 +65,17 @@ export default function Home() {
       }
 
       {/* Completed Todos List */}
-      <Accordeon title="Завершенные">
-      {todos.length > 0 &&
-          <div>
-            {todos.map((todo, index) => (
-              <Todo key={todo.id} todo={todo} />
-            ))}
-          </div>
-        }
+      <Accordeon
+        title="Завершенные"
+        className="mt-4"
+      >
+        {todos.length > 0 &&
+            <div>
+              {todos.map((todo, index) => (
+                <Todo key={todo.id} todo={todo} />
+              ))}
+            </div>
+          }
       </Accordeon>
 
       <div
