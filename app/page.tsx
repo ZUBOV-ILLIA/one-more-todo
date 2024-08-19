@@ -53,7 +53,7 @@ export default function Home() {
 
   return (
     <main
-      className="flex min-h-screen flex-col justify-between align-middle p-4"
+      className="min-h-screen p-4"
     >
       {/* Todos List */}
       {todos.length > 0 &&
