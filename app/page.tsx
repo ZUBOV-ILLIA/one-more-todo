@@ -74,6 +74,8 @@ export default function Home() {
           }
       </Accordeon>
 
+
+      {/* CreateTodoPanel */}
       <div
         className={`duration-300 ${isVisibleCreateTodo ? 'opacity-0 invisible translate-x-11' : ''} fixed bottom-4 right-2 inline-flex justify-center items-center w-16 h-16  bg-indigo-700 text-black rounded-full text-4xl pb-1`}
         onClick={() => setIsVisibleCreateTodo(true)}
@@ -106,7 +108,7 @@ export default function Home() {
           }}
         />
         <button
-          className={`bg-slate-${todo.title.trim() ? '100' : '400'} text-neutral-800 min-w-7 min-h-7 rounded`}
+          className={`${todo.title.trim() ? 'bg-slate-100' : 'bg-slate-400'} text-neutral-800 min-w-7 min-h-7 rounded`}
           onClick={createTodo}
         >
         ↑
