@@ -58,7 +58,7 @@ export default function Home() {
       {/* Todos List */}
       {todos.length > 0 &&
         <div className="todos-list">
-          {todos.filter(el => el.completed).map((todo, index) => (
+          {todos.filter(el => !el.completed).map((todo, index) => (
             <Todo key={todo.id} todo={todo} todos={todos} setTodos={setTodos} />
           ))}
         </div>
@@ -71,7 +71,7 @@ export default function Home() {
       >
         {todos.length > 0 &&
             <div>
-              {todos.filter(el => !el.completed).map((todo, index) => (
+              {todos.filter(el => el.completed).map((todo, index) => (
                 <Todo key={todo.id} todo={todo} todos={todos} setTodos={setTodos} />
               ))}
             </div>
