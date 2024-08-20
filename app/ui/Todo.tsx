@@ -16,8 +16,6 @@ export default function Todo({ todo }: Props) {
       completed: !isChecked
     })
       .then(res => {
-        console.log(res.data);
-
         setIsChecked(!isChecked);
       })
       .catch(err => {
