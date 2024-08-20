@@ -9,7 +9,7 @@ export default function Accordeon({
   title: string,
   className?: string
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className={className}>

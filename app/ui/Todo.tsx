@@ -5,9 +5,11 @@ import { API } from "../lib/constants";
 
 interface Props {
   todo: TodoType;
+  todos: TodoType[];
+  setTodos: (todos: TodoType[]) => void;
 }
 
-export default function Todo({ todo }: Props) {
+export default function Todo({ todo, todos, setTodos }: Props) {
   const [isChecked, setIsChecked] = useState(todo.completed);
   const [isImportant, setIsImportant] = useState(false);
 
@@ -17,6 +19,17 @@ export default function Todo({ todo }: Props) {
     })
       .then(res => {
         setIsChecked(!isChecked);
+
+        setTodos(todos.map(el => {
+          if (el.id === todo.id) {
+            return {
+              ...el,
+              completed: !isChecked
+            };
+          }
+
+          return el;
+        }));
       })
       .catch(err => {
         console.log('err', err);
