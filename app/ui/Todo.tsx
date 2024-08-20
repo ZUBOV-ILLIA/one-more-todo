@@ -32,19 +32,20 @@ export default function Todo({ todo, todos, setTodos }: Props) {
         }));
       })
       .catch(err => {
-        console.log('err', err);
+        throw new Error(err);
       });
   }
 
   return (
-    <div className="mb-0.5 p-3 flex bg-neutral-800 text-slate-100 rounded justify-between">
-      <div className="flex">
+    <div className={`mb-0.5 p-3 flex bg-neutral-800 ${todo.completed ? 'text-slate-500' : 'text-slate-100'}  rounded justify-between`}>
+      <div className={`flex ${todo.completed ? 'line-through' : ''}`}>
         <input
           type="checkbox"
           className="mr-2 self-start mt-1.5"
           checked={isChecked}
           onChange={checkTodo}
         />
+        
         {todo.title}
       </div>
       <input

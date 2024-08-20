@@ -22,12 +22,10 @@ export default function Home() {
   useEffect(() => {
     axios.get(`${API}/todos`)
       .then(res => {
-        console.log(res.data);
-
         setTodos(res.data);
       })
       .catch(err => {
-        console.log('err', err);
+        throw new Error(err);
       });
   }, []);
 
@@ -40,14 +38,12 @@ export default function Home() {
       title: todo.title.replace(/\s+/g, ' ').trim()
     })
       .then(res => {
-        console.log(res);
-
         setTodos([res.data, ...todos]);
         setTodo({ userId: 1, id: '', title: '', completed: false });
         setIsVisibleCreateTodo(false);
       })
       .catch(err => {
-        console.log('err', err);
+        throw new Error(err);
       });
   }
 
