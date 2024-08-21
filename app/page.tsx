@@ -11,14 +11,17 @@ import { v4 as uuidv4 } from 'uuid';
 import Todo from "./ui/Todo";
 import Accordeon from "./ui/Accordeon";
 import CounterReduxExample from "./ui/CounterReduxExample";
+import { useDispatch, useSelector } from "react-redux";
+import { togglePanel } from "./GlobalRedux/Features/todos/todoSlice";
 
 export default function Home() {
   const pathname = usePathname();
   const inpRef = useRef<any>(null);
+  const dispatch = useDispatch();
   const [todo, setTodo] = useState<TodoType>({ userId: 1, id: '', title: '', completed: false });
   const [todos, setTodos] = useState<TodoType[]>([]);
-  const [completedTodos, setCompletedTodos] = useState<TodoType[]>([]);
-  const [isVisibleCreateTodo, setIsVisibleCreateTodo] = useState(false);
+
+  const isPanelVisible = useSelector(state => state.todoReducer.isPanelVisible);
 
   useEffect(() => {
     axios.get(`${API}/todos`)
@@ -41,7 +44,8 @@ export default function Home() {
       .then(res => {
         setTodos([res.data, ...todos]);
         setTodo({ userId: 1, id: '', title: '', completed: false });
-        setIsVisibleCreateTodo(false);
+        // setIsVisibleCreateTodo(false);
+        dispatch(togglePanel(false));
       })
       .catch(err => {
         throw new Error(err);
@@ -80,19 +84,25 @@ export default function Home() {
 
       {/* CreateTodoPanel */}
       <div
-        className={`duration-300 ${isVisibleCreateTodo ? 'opacity-0 invisible translate-x-11' : ''} fixed bottom-4 right-2 inline-flex justify-center items-center w-16 h-16  bg-indigo-700 text-black rounded-full text-4xl pb-1`}
-        onClick={() => setIsVisibleCreateTodo(true)}
+        className={`duration-300 ${isPanelVisible ? 'opacity-0 invisible translate-x-11' : ''} fixed bottom-4 right-2 inline-flex justify-center items-center w-16 h-16  bg-indigo-700 text-black rounded-full text-4xl pb-1`}
+        onClick={() => {
+          // setIsVisibleCreateTodo(true);
+          dispatch(togglePanel(true));
+        }}
       >
         +
       </div>
 
       {/* background */}
       <div
-        className={`duration-300 ${isVisibleCreateTodo ? 'opacity-50' : 'opacity-0 invisible'} fixed top-0 bottom-0 left-0 right-0 flex bg-black`}
-        onClick={() => setIsVisibleCreateTodo(false)}
+        className={`duration-300 ${isPanelVisible ? 'opacity-50' : 'opacity-0 invisible'} fixed top-0 bottom-0 left-0 right-0 flex bg-black`}
+        onClick={() => {
+          // setIsVisibleCreateTodo(false);
+          dispatch(togglePanel(false));
+        }}
       ></div>
 
-      <div className={`duration-300 ${isVisibleCreateTodo ? '' : 'translate-y-11 opacity-0 invisible'} fixed bottom-0 left-0 right-0 p-3 flex bg-neutral-800`}>
+      <div className={`duration-300 ${isPanelVisible ? '' : 'translate-y-11 opacity-0 invisible'} fixed bottom-0 left-0 right-0 p-3 flex bg-neutral-800`}>
         <input
           type="checkbox"
           className="mr-2"
