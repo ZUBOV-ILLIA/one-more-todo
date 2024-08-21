@@ -2,34 +2,30 @@ import { useState } from "react";
 import { TodoType } from "../types/definitions";
 import axios from "axios";
 import { API } from "../lib/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { TodoStateInterface, updateTodo } from "../GlobalRedux/Features/todos/todoSlice";
 
 interface Props {
   todo: TodoType;
-  todos: TodoType[];
   setTodos: (todos: TodoType[]) => void;
 }
 
-export default function Todo({ todo, todos, setTodos }: Props) {
+export default function Todo({ todo, setTodos }: Props) {
+  const dispatch = useDispatch();
+
   const [isChecked, setIsChecked] = useState(todo.completed);
   const [isImportant, setIsImportant] = useState(false);
+  const todos = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos);
+
 
   function checkTodo() {
-    axios.patch(`${API}/todos/${todo.id}`, {
-      completed: !isChecked
+    const updatedTodo = { ...todo, completed: !isChecked };
+
+    axios.put(`${API}/todos/${todo.id}`, {
+      todo: updatedTodo
     })
       .then(res => {
-        setIsChecked(!isChecked);
-
-        setTodos(todos.map(el => {
-          if (el.id === todo.id) {
-            return {
-              ...el,
-              completed: !isChecked
-            };
-          }
-
-          return el;
-        }));
+        dispatch(updateTodo(updatedTodo));
       })
       .catch(err => {
         throw new Error(err);
@@ -42,7 +38,7 @@ export default function Todo({ todo, todos, setTodos }: Props) {
         <input
           type="checkbox"
           className="mr-2 self-start mt-1.5"
-          checked={isChecked}
+          checked={todo.completed}
           onChange={checkTodo}
         />
         

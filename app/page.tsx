@@ -11,25 +11,27 @@ import Todo from "./ui/Todo";
 import Accordeon from "./ui/Accordeon";
 import CounterReduxExample from "./ui/CounterReduxExample";
 import { useDispatch, useSelector } from "react-redux";
-import { TodoStateInterface, togglePanel } from "./GlobalRedux/Features/todos/todoSlice";
+import { setTodos, TodoStateInterface, togglePanel } from "./GlobalRedux/Features/todos/todoSlice";
 import CreateTodoPanel from "./ui/CreateTodoPanel";
 
 export default function Home() {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const [todo, setTodo] = useState<TodoType>({ userId: 1, id: '', title: '', completed: false });
-  const [todos, setTodos] = useState<TodoType[]>([]);
+  // const [todos, setTodos] = useState<TodoType[]>([]);
+  const todos = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos);
+
 
 
   useEffect(() => {
     axios.get(`${API}/todos`)
       .then(res => {
-        setTodos(res.data);
+        dispatch(setTodos(res.data));
       })
       .catch(err => {
         throw new Error(err);
       });
-  }, []);
+  }, [dispatch]);
 
 
   return (
@@ -42,7 +44,7 @@ export default function Home() {
       {todos.length > 0 &&
         <div className="todos-list">
           {todos.filter(el => !el.completed).map((todo, index) => (
-            <Todo key={todo.id} todo={todo} todos={todos} setTodos={setTodos} />
+            <Todo key={todo.id} todo={todo} setTodos={setTodos} />
           ))}
         </div>
       }
@@ -55,13 +57,13 @@ export default function Home() {
         {todos.length > 0 &&
             <div>
               {todos.filter(el => el.completed).map((todo, index) => (
-                <Todo key={todo.id} todo={todo} todos={todos} setTodos={setTodos} />
+                <Todo key={todo.id} todo={todo} setTodos={setTodos} />
               ))}
             </div>
           }
       </Accordeon>
 
-      <CreateTodoPanel todo={todo} setTodo={setTodo} todos={todos} setTodos={setTodos} />
+      {/* <CreateTodoPanel todo={todo} setTodo={setTodo} todos={todos} setTodos={setTodos} /> */}
     </main>
   );
 }

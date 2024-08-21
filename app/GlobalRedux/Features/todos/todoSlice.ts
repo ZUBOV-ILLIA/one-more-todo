@@ -1,23 +1,38 @@
+import { TodoType } from "@/app/types/definitions";
 import { createSlice } from "@reduxjs/toolkit";
-import { todo } from "node:test";
 
 export interface TodoStateInterface {
-  todos: string[];
+  todos: TodoType[];
   isPanelVisible: boolean;
 }
 
+const initialState: TodoStateInterface = {
+  todos: [],
+  isPanelVisible: false,
+};
+
 const todoSlice = createSlice({
   name: 'todo',
-  initialState: {
-    todos: [],
-    isPanelVisible: false,
-  },
+  initialState,
   reducers: {
+    setTodos(state, action) {
+      state.todos = action.payload;
+    },
     addTodo(state, action) {
-
+      // state.todos.
     },
     updateTodo(state, action) {
+      // console.log('state', state.todos);
+      // console.log('action', action);
 
+
+      state.todos = state.todos.map(todo => {
+        if (todo.id === action.payload.id) {
+          return action.payload;
+        }
+
+        return todo;
+      });
     },
     removeTodo(state, action) {
 
@@ -28,5 +43,5 @@ const todoSlice = createSlice({
   }
 });
 
-export const { addTodo, updateTodo, removeTodo, togglePanel } = todoSlice.actions;
+export const { setTodos, addTodo, updateTodo, removeTodo, togglePanel } = todoSlice.actions;
 export default todoSlice.reducer;
