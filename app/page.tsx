@@ -12,7 +12,7 @@ import Todo from "./ui/Todo";
 import Accordeon from "./ui/Accordeon";
 import CounterReduxExample from "./ui/CounterReduxExample";
 import { useDispatch, useSelector } from "react-redux";
-import { togglePanel } from "./GlobalRedux/Features/todos/todoSlice";
+import { TodoStateInterface, togglePanel } from "./GlobalRedux/Features/todos/todoSlice";
 
 export default function Home() {
   const pathname = usePathname();
@@ -21,7 +21,7 @@ export default function Home() {
   const [todo, setTodo] = useState<TodoType>({ userId: 1, id: '', title: '', completed: false });
   const [todos, setTodos] = useState<TodoType[]>([]);
 
-  const isPanelVisible = useSelector(state => state.todoReducer.isPanelVisible);
+  const isPanelVisible = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.isPanelVisible);
 
   useEffect(() => {
     axios.get(`${API}/todos`)
