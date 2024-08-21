@@ -22,10 +22,6 @@ const todoSlice = createSlice({
       state.todos.unshift(action.payload);
     },
     updateTodo(state, action) {
-      // console.log('state', state.todos);
-      // console.log('action', action);
-
-
       state.todos = state.todos.map(todo => {
         if (todo.id === action.payload.id) {
           return action.payload;
@@ -35,7 +31,7 @@ const todoSlice = createSlice({
       });
     },
     removeTodo(state, action) {
-
+      state.todos = state.todos.filter(todo => todo.id !== action.payload);
     },
     togglePanel(state, action) {
       state.isPanelVisible = action.payload;

@@ -3,7 +3,7 @@ import { TodoType } from "../types/definitions";
 import axios from "axios";
 import { API } from "../lib/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { TodoStateInterface, updateTodo } from "../GlobalRedux/Features/todos/todoSlice";
+import { removeTodo, TodoStateInterface, updateTodo } from "../GlobalRedux/Features/todos/todoSlice";
 
 interface Props {
   todo: TodoType;
@@ -31,6 +31,16 @@ export default function Todo({ todo }: Props) {
       });
   }
 
+  function deleteTodo() {
+    axios.delete(`${API}/todos/${todo.id}`)
+      .then(res => {
+        dispatch(removeTodo(todo.id));
+      })
+      .catch(err => {
+        throw new Error(err);
+      });
+  }
+
   return (
     <div className={`mb-0.5 p-3 flex bg-neutral-800 ${todo.completed ? 'text-slate-500' : 'text-slate-100'}  rounded justify-between`}>
       <div className={`flex ${todo.completed ? 'line-through' : ''}`}>
@@ -40,15 +50,27 @@ export default function Todo({ todo }: Props) {
           checked={todo.completed}
           onChange={checkTodo}
         />
-        
+
         {todo.title}
       </div>
-      <input
+
+      <div>
+        <input
           type="checkbox"
-          className=""
+          className="mr-6"
           checked={isImportant}
           onChange={() => setIsImportant(!isImportant)}
         />
+
+        {todo.completed &&
+          <button
+            className="cursor-pointer text-red-500 hover:text-red-700 border-none text-sm"
+            onClick={deleteTodo}
+          >
+            Удалить
+          </button>
+        }
+      </div>
     </div>
   );
 }

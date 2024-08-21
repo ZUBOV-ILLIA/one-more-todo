@@ -3,7 +3,7 @@ import { addTodo, TodoStateInterface, togglePanel } from "../GlobalRedux/Feature
 import { todo } from "node:test";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TodoType } from "../types/definitions";
 import { API } from "../lib/constants";
 
@@ -17,8 +17,9 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
   const isPanelVisible = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.isPanelVisible);
   const [title, setTitle] = useState('');
 
-  const todos = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos);
-
+  useEffect(() => {
+    if (isPanelVisible) setTitle('');
+  }, [isPanelVisible]);
 
   async function createTodo() {
     if (!title.trim()) return;
@@ -35,6 +36,7 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
       .then(res => {
         dispatch(addTodo(newTodo));
         dispatch(togglePanel(false));
+        
       })
       .catch(err => {
         throw new Error(err);
@@ -44,7 +46,7 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
   return (
     <>
       <div
-        className={`duration-300 ${isPanelVisible ? 'opacity-0 invisible translate-x-11' : ''} fixed bottom-4 right-2 inline-flex justify-center items-center w-16 h-16  bg-indigo-700 text-black rounded-full text-4xl pb-1`}
+        className={`duration-300 cursor-pointer ${isPanelVisible ? 'opacity-0 invisible translate-x-11' : ''} fixed bottom-4 right-2 inline-flex justify-center items-center w-16 h-16  bg-indigo-700 text-black rounded-full text-4xl pb-1`}
         onClick={() => {
           dispatch(togglePanel(true));
         }}
@@ -78,7 +80,7 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
           }}
         />
         <button
-          className={`${todo.title.trim() ? 'bg-slate-100' : 'bg-slate-400'} text-neutral-800 min-w-7 min-h-7 rounded`}
+          className={`${todo.title.trim() ? 'bg-slate-100' : 'bg-slate-400'} cursor-pointer text-neutral-800 min-w-7 min-h-7 rounded`}
           onClick={createTodo}
         >
         ↑
