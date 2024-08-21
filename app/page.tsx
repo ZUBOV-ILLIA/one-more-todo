@@ -18,7 +18,6 @@ export default function Home() {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const [todo, setTodo] = useState<TodoType>({ userId: 1, id: '', title: '', completed: false });
-  // const [todos, setTodos] = useState<TodoType[]>([]);
   const todos = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos);
 
 
@@ -38,18 +37,14 @@ export default function Home() {
     <main
       className="min-h-screen p-4"
     >
-      <CounterReduxExample />
-
-      {/* Todos List */}
       {todos.length > 0 &&
         <div className="todos-list">
           {todos.filter(el => !el.completed).map((todo, index) => (
-            <Todo key={todo.id} todo={todo} setTodos={setTodos} />
+            <Todo key={todo.id} todo={todo} />
           ))}
         </div>
       }
 
-      {/* Completed Todos List */}
       <Accordeon
         title="Завершенные"
         className="mt-4"
@@ -57,13 +52,13 @@ export default function Home() {
         {todos.length > 0 &&
             <div>
               {todos.filter(el => el.completed).map((todo, index) => (
-                <Todo key={todo.id} todo={todo} setTodos={setTodos} />
+                <Todo key={todo.id} todo={todo} />
               ))}
             </div>
           }
       </Accordeon>
 
-      {/* <CreateTodoPanel todo={todo} setTodo={setTodo} todos={todos} setTodos={setTodos} /> */}
+      <CreateTodoPanel todo={todo} setTodo={setTodo} />
     </main>
   );
 }

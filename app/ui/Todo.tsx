@@ -7,10 +7,9 @@ import { TodoStateInterface, updateTodo } from "../GlobalRedux/Features/todos/to
 
 interface Props {
   todo: TodoType;
-  setTodos: (todos: TodoType[]) => void;
 }
 
-export default function Todo({ todo, setTodos }: Props) {
+export default function Todo({ todo }: Props) {
   const dispatch = useDispatch();
 
   const [isChecked, setIsChecked] = useState(todo.completed);
@@ -21,7 +20,7 @@ export default function Todo({ todo, setTodos }: Props) {
   function checkTodo() {
     const updatedTodo = { ...todo, completed: !isChecked };
 
-    axios.put(`${API}/todos/${todo.id}`, {
+    axios.post(`${API}/todos/${todo.id}`, {
       todo: updatedTodo
     })
       .then(res => {

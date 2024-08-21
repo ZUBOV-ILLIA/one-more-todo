@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { TodoStateInterface, togglePanel } from "../GlobalRedux/Features/todos/todoSlice";
+import { addTodo, TodoStateInterface, togglePanel } from "../GlobalRedux/Features/todos/todoSlice";
 import { todo } from "node:test";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
@@ -10,28 +10,30 @@ import { API } from "../lib/constants";
 interface Props {
   todo: TodoType;
   setTodo: (todo: TodoType) => void;
-  todos: TodoType[];
-  setTodos: (todos: TodoType[]) => void;
 }
 
-export default function CreateTodoPanel({ todo, setTodo, todos, setTodos }: Props) {
+export default function CreateTodoPanel({ todo, setTodo }: Props) {
   const dispatch = useDispatch();
   const isPanelVisible = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.isPanelVisible);
-  // const [todo, setTodo] = useState<TodoType>({ userId: 1, id: '', title: '', completed: false });
-  // const [todos, setTodos] = useState<TodoType[]>([]);
+  const [title, setTitle] = useState('');
+
+  const todos = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos);
 
 
   async function createTodo() {
-    if (!todo.title.trim()) return;
+    if (!title.trim()) return;
 
-    axios.post(`${API}/todo`, {
+    const newTodo = {
       ...todo,
       id: uuidv4(),
-      title: todo.title.replace(/\s+/g, ' ').trim()
+      title: title.replace(/\s+/g, ' ').trim()
+    };
+
+    axios.post(`${API}/todo`, {
+      ...newTodo
     })
       .then(res => {
-        setTodos([res.data, ...todos]);
-        setTodo({ userId: 1, id: '', title: '', completed: false });
+        dispatch(addTodo(newTodo));
         dispatch(togglePanel(false));
       })
       .catch(err => {
@@ -67,10 +69,10 @@ export default function CreateTodoPanel({ todo, setTodo, todos, setTodos }: Prop
         <input
           className="text-xl w-full rounded outline-none px-2 bg-neutral-800 text-slate-100"
           type="text"
-          name="todoInput"
-          value={todo?.title}
+          name="title"
+          value={title}
           placeholder="Добавить задачу"
-          onChange={e => setTodo({ ...todo, title: e.target.value })}
+          onChange={e => setTitle(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') createTodo();
           }}

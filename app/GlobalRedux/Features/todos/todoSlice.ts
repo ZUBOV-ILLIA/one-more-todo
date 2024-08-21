@@ -19,7 +19,7 @@ const todoSlice = createSlice({
       state.todos = action.payload;
     },
     addTodo(state, action) {
-      // state.todos.
+      state.todos.unshift(action.payload);
     },
     updateTodo(state, action) {
       // console.log('state', state.todos);
