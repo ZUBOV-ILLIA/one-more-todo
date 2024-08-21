@@ -11,14 +11,17 @@ interface Props {
 
 export default function Todo({ todo }: Props) {
   const dispatch = useDispatch();
-
-  const [isChecked, setIsChecked] = useState(todo.completed);
+  const [title, setTitle] = useState(todo.title);
   const [isImportant, setIsImportant] = useState(false);
   const todos = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos);
 
 
-  function checkTodo() {
-    const updatedTodo = { ...todo, completed: !isChecked };
+  function updatingTodo(key: 'title' | 'complete') {
+    const updatedTodo = {
+      ...todo,
+      title: key === 'title' ? title : todo.title,
+      completed: key === 'complete' ? !todo.completed : todo.completed
+    };
 
     axios.post(`${API}/todos/${todo.id}`, {
       todo: updatedTodo
@@ -43,28 +46,38 @@ export default function Todo({ todo }: Props) {
 
   return (
     <div className={`mb-0.5 p-3 flex bg-neutral-800 ${todo.completed ? 'text-slate-500' : 'text-slate-100'}  rounded justify-between`}>
-      <div className={`flex ${todo.completed ? 'line-through' : ''}`}>
+      <div className={`flex grow ${todo.completed ? 'line-through' : ''}`}>
         <input
           type="checkbox"
           className="mr-2 self-start mt-1.5"
           checked={todo.completed}
-          onChange={checkTodo}
+          onChange={() => updatingTodo('complete')}
         />
 
-        {todo.title}
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full mx-3 bg-transparent outline-none resize-none"
+          disabled={todo.completed}
+          onKeyUp={(e) => {
+            if (e.key === 'Enter') updatingTodo('title');
+          }}
+          onBlur={() => updatingTodo('title')}
+        />
       </div>
 
-      <div>
+      <div className="whitespace-nowrap">
         <input
           type="checkbox"
-          className="mr-6"
+          className=""
           checked={isImportant}
           onChange={() => setIsImportant(!isImportant)}
         />
 
         {todo.completed &&
           <button
-            className="cursor-pointer text-red-500 hover:text-red-700 border-none text-sm"
+            className="ml-3 cursor-pointer text-red-500 hover:text-red-700 border-none text-sm"
             onClick={deleteTodo}
           >
             Удалить

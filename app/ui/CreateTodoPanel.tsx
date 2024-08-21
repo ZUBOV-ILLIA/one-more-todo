@@ -75,7 +75,7 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
           value={title}
           placeholder="Добавить задачу"
           onChange={e => setTitle(e.target.value)}
-          onKeyDown={(e) => {
+          onKeyUp={(e) => {
             if (e.key === 'Enter') createTodo();
           }}
         />

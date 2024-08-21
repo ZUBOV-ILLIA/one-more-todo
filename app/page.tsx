@@ -19,6 +19,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const [todo, setTodo] = useState<TodoType>({ userId: 1, id: '', title: '', completed: false });
   const todos = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos);
+  const completedTodos = todos.filter(el => el.completed);
 
 
 
@@ -31,7 +32,6 @@ export default function Home() {
         throw new Error(err);
       });
   }, [dispatch]);
-
 
   return (
     <main
@@ -46,12 +46,12 @@ export default function Home() {
       }
 
       <Accordeon
-        title="Завершенные"
+        title={`Завершенные ${completedTodos.length}`}
         className="mt-4"
       >
-        {todos.length > 0 &&
+        {completedTodos.length > 0 &&
             <div>
-              {todos.filter(el => el.completed).map((todo, index) => (
+              {completedTodos.map((todo, index) => (
                 <Todo key={todo.id} todo={todo} />
               ))}
             </div>
