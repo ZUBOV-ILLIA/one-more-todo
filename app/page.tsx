@@ -10,6 +10,7 @@ import { TodoType } from "./types/definitions";
 import { v4 as uuidv4 } from 'uuid';
 import Todo from "./ui/Todo";
 import Accordeon from "./ui/Accordeon";
+import CounterReduxExample from "./ui/CounterReduxExample";
 
 export default function Home() {
   const pathname = usePathname();
@@ -51,6 +52,8 @@ export default function Home() {
     <main
       className="min-h-screen p-4"
     >
+      <CounterReduxExample />
+
       {/* Todos List */}
       {todos.length > 0 &&
         <div className="todos-list">
