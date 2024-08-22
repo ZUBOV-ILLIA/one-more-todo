@@ -13,6 +13,7 @@ import CounterReduxExample from "./ui/CounterReduxExample";
 import { useDispatch, useSelector } from "react-redux";
 import { setTodos, TodoStateInterface, togglePanel } from "./GlobalRedux/Features/todos/todoSlice";
 import CreateTodoPanel from "./ui/CreateTodoPanel";
+import Success from "./ui/Success";
 
 export default function Home() {
   const pathname = usePathname();
@@ -37,6 +38,8 @@ export default function Home() {
     <main
       className="min-h-screen p-4"
     >
+      <Success className="w-8 h-8 mb-4" />
+
       {todos.length > 0 &&
         <div className="todos-list">
           {todos.filter(el => !el.completed).map((todo, index) => (

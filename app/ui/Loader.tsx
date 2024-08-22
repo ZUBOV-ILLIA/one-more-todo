@@ -4,7 +4,7 @@ export default function Loader({ size = 24, color = '#fff', className = '' }) {
         className={`animate-spin ${className}`}
         width={size}
         height={size}
-        viewBox={`0 0 ${size} ${size}`}
+        viewBox="0 0 24 24"
         
         // fill="#2E2434"
         xmlns="http://www.w3.org/2000/svg"
