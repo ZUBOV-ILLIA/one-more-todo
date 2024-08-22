@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, TodoStateInterface, togglePanel } from "../GlobalRedux/Features/todos/todoSlice";
-import { todo } from "node:test";
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from "react";
@@ -24,19 +23,10 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
   async function createTodo() {
     if (!title.trim()) return;
 
-    const newTodo = {
-      ...todo,
-      id: uuidv4(),
-      title: title.replace(/\s+/g, ' ').trim()
-    };
-
-    axios.post(`${API}/todo`, {
-      ...newTodo
-    })
+    axios.post(`${API}/todos`, { title })
       .then(res => {
-        dispatch(addTodo(newTodo));
+        dispatch(addTodo(res.data));
         dispatch(togglePanel(false));
-        
       })
       .catch(err => {
         throw new Error(err);

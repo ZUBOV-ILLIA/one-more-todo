@@ -16,15 +16,15 @@ export default function Todo({ todo }: Props) {
   const todos = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos);
 
 
-  function updatingTodo(key: 'title' | 'complete') {
+  function updatingTodo(completedValue?: boolean) {
     const updatedTodo = {
       ...todo,
-      title: key === 'title' ? title : todo.title,
-      completed: key === 'complete' ? !todo.completed : todo.completed
+      title,
+      completed: completedValue !== undefined ? completedValue : todo.completed,
     };
 
-    axios.post(`${API}/todos/${todo.id}`, {
-      todo: updatedTodo
+    axios.patch(`${API}/todos/${todo.id}`, {
+      title, completed: updatedTodo.completed,
     })
       .then(res => {
         dispatch(updateTodo(updatedTodo));
@@ -51,7 +51,7 @@ export default function Todo({ todo }: Props) {
           type="checkbox"
           className="mr-2 self-start mt-1.5"
           checked={todo.completed}
-          onChange={() => updatingTodo('complete')}
+          onChange={() => updatingTodo(!todo.completed)}
         />
 
         <input
@@ -61,9 +61,9 @@ export default function Todo({ todo }: Props) {
           className="w-full mx-3 bg-transparent outline-none resize-none"
           disabled={todo.completed}
           onKeyUp={(e) => {
-            if (e.key === 'Enter') updatingTodo('title');
+            if (e.key === 'Enter') updatingTodo();
           }}
-          onBlur={() => updatingTodo('title')}
+          onBlur={() => updatingTodo()}
         />
       </div>
 
