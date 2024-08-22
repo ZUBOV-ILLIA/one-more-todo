@@ -1,3 +1,5 @@
-export const API = location.hostname === 'localhost'
-  ? process.env.NEXT_PUBLIC_LOCAL_API
-  : process.env.NEXT_PUBLIC_API;
+export let API = process.env.NEXT_PUBLIC_API;
+
+if (location && location.hostname === "localhost") {
+  API = process.env.NEXT_PUBLIC_LOKAL_API;
+}

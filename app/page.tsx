@@ -1,28 +1,21 @@
 'use client';
 
 import axios from "axios";
-import Image from "next/image";
-import { useRouter, usePathname } from "next/navigation";
-import { Input } from "postcss";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { API } from "./lib/constants";
 import { TodoType } from "./types/definitions";
 import Todo from "./ui/Todo";
 import Accordeon from "./ui/Accordeon";
-import CounterReduxExample from "./ui/CounterReduxExample";
 import { useDispatch, useSelector } from "react-redux";
-import { setTodos, TodoStateInterface, togglePanel } from "./GlobalRedux/Features/todos/todoSlice";
+import { setTodos, TodoStateInterface } from "./GlobalRedux/Features/todos/todoSlice";
 import CreateTodoPanel from "./ui/CreateTodoPanel";
 import Success from "./ui/Success";
 
 export default function Home() {
-  const pathname = usePathname();
   const dispatch = useDispatch();
   const [todo, setTodo] = useState<TodoType>({ userId: 1, id: '', title: '', completed: false });
   const todos = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos);
   const completedTodos = todos.filter(el => el.completed);
-
-
 
   useEffect(() => {
     axios.get(`${API}/todos`)
