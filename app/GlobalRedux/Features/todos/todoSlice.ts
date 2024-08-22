@@ -1,5 +1,5 @@
 import { TodoType } from "@/app/types/definitions";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface TodoStateInterface {
   todos: TodoType[];
@@ -15,13 +15,13 @@ const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
-    setTodos(state, action) {
+    setTodos(state, action: PayloadAction<TodoType[]>) {
       state.todos = action.payload;
     },
-    addTodo(state, action) {
+    addTodo(state, action: PayloadAction<TodoType>) {
       state.todos.unshift(action.payload);
     },
-    updateTodo(state, action) {
+    updateTodo(state, action: PayloadAction<TodoType>) {
       state.todos = state.todos.map(todo => {
         if (todo.id === action.payload.id) {
           return action.payload;
@@ -30,10 +30,10 @@ const todoSlice = createSlice({
         return todo;
       });
     },
-    removeTodo(state, action) {
+    removeTodo(state, action: PayloadAction<string>) {
       state.todos = state.todos.filter(todo => todo.id !== action.payload);
     },
-    togglePanel(state, action) {
+    togglePanel(state, action: PayloadAction<boolean>) {
       state.isPanelVisible = action.payload;
     }
   }
