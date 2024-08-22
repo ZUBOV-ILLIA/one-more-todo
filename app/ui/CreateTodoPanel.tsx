@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from "react";
 import { TodoType } from "../types/definitions";
 import { API } from "../lib/constants";
+import Loader from "./Loader";
 
 interface Props {
   todo: TodoType;
@@ -13,22 +14,27 @@ interface Props {
 
 export default function CreateTodoPanel({ todo, setTodo }: Props) {
   const dispatch = useDispatch();
-  const isPanelVisible = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.isPanelVisible);
   const [title, setTitle] = useState('');
+  const [isRequest, setIsRequest] = useState(false);
+  const isPanelVisible = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.isPanelVisible);
+
 
   useEffect(() => {
     if (isPanelVisible) setTitle('');
   }, [isPanelVisible]);
 
   async function createTodo() {
-    if (!title.trim()) return;
+    if (!title.trim() || isRequest) return;
 
+    setIsRequest(true);
     axios.post(`${API}/todos`, { title })
       .then(res => {
         dispatch(addTodo(res.data));
         dispatch(togglePanel(false));
+        setIsRequest(false);
       })
       .catch(err => {
+        setIsRequest(false);
         throw new Error(err);
       });
   }
@@ -70,10 +76,12 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
           }}
         />
         <button
-          className={`${todo.title.trim() ? 'bg-slate-100' : 'bg-slate-400'} cursor-pointer text-neutral-800 min-w-7 min-h-7 rounded`}
+          className={`${todo.title.trim() ? 'bg-slate-100' : 'bg-slate-400'} flex items-center justify-center cursor-pointer text-neutral-800 min-w-7 min-h-7 rounded`}
           onClick={createTodo}
         >
-        ↑
+          {isRequest ? <Loader /> : '↑'}
+
+        
         </button>
       </div>
     </>
