@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTodos, TodoStateInterface } from "./GlobalRedux/Features/todos/todoSlice";
 import CreateTodoPanel from "./ui/CreateTodoPanel";
 import CheckAllBtn from "./ui/CheckAllBtn";
+import RemoveManyBtn from "./ui/icons/RemoveManyBtn";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ export default function Home() {
 
   return (
     <main
-      className="min-h-screen p-4"
+      className="min-h-screen p-4 pb-24"
     >
       <CheckAllBtn />
 
@@ -46,12 +47,16 @@ export default function Home() {
         className="mt-4"
       >
         {completedTodos.length > 0 &&
-            <div>
-              {completedTodos.map((todo, index) => (
-                <Todo key={todo.id} todo={todo} />
-              ))}
+          <div>
+            {completedTodos.map((todo) => (
+              <Todo key={todo.id} todo={todo} />
+            ))}
+
+            <div className="flex justify-end mt-2 ">
+              <RemoveManyBtn />
             </div>
-          }
+          </div>
+        }
       </Accordeon>
 
       <CreateTodoPanel todo={todo} setTodo={setTodo} />

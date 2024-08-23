@@ -22,7 +22,7 @@ export default function CheckAllBtn() {
     const todoIds = todos.map(el => el.id);
 
     setIsRequest(true);
-    axios.patch(`${API}/todos`, { ids: todoIds, completed: !completedEvery })
+    axios.patch(`${API}/todos`, { ids: todoIds, action: 'toggle', completed: !completedEvery })
       .then(res => {
         setCompletedEvery(!completedEvery);
         dispatch(setTodos(todos.map(el => ({ ...el, completed: !completedEvery }))));
