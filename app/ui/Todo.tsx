@@ -4,8 +4,7 @@ import axios from "axios";
 import { API } from "../lib/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { removeTodo, TodoStateInterface, updateTodo } from "../GlobalRedux/Features/todos/todoSlice";
-import Image from "next/image";
-import Loader from "./Loader";
+import IconLoader from "./icons/IconLoader";
 
 interface Props {
   todo: TodoType;
@@ -59,7 +58,10 @@ export default function Todo({ todo }: Props) {
   return (
     <div className={`mb-0.5 p-3 flex bg-neutral-800 ${todo.completed ? 'text-slate-500' : 'text-slate-100'} rounded justify-between relative`}>
       <div className={`flex grow ${todo.completed ? 'line-through' : ''}`}>
-        {isRequest && <Loader className="absolute left-1.5" />}
+        
+          <div className={`absolute left-1.5 bg-neutral-800 duration-300 ${!isRequest ? 'opacity-0 invisible' : ''}`}>
+            <IconLoader className=" h-6 w-6" />
+          </div>
         <input
           type="checkbox"
           className="mr-2 self-start mt-1.5"

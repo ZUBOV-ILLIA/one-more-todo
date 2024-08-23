@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from "react";
 import { TodoType } from "../types/definitions";
 import { API } from "../lib/constants";
-import Loader from "./Loader";
+import IconLoader from "./icons/IconLoader";
 
 interface Props {
   todo: TodoType;
@@ -79,7 +79,7 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
           className={`${todo.title.trim() ? 'bg-slate-100' : 'bg-slate-400'} flex items-center justify-center cursor-pointer text-neutral-800 min-w-7 min-h-7 rounded`}
           onClick={createTodo}
         >
-          {isRequest ? <Loader /> : '↑'}
+          {isRequest ? <IconLoader /> : '↑'}
 
         
         </button>

@@ -9,7 +9,7 @@ import Accordeon from "./ui/Accordeon";
 import { useDispatch, useSelector } from "react-redux";
 import { setTodos, TodoStateInterface } from "./GlobalRedux/Features/todos/todoSlice";
 import CreateTodoPanel from "./ui/CreateTodoPanel";
-import Success from "./ui/Success";
+import CheckAllBtn from "./ui/CheckAllBtn";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ export default function Home() {
     <main
       className="min-h-screen p-4"
     >
-      <Success className="w-8 h-8 mb-4" />
+      <CheckAllBtn />
 
       {todos.length > 0 &&
         <div className="todos-list">
