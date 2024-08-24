@@ -1,8 +1,12 @@
 'use client';
 
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../GlobalRedux/store";
-import { decrement, increment, incrementByAmount } from "../GlobalRedux/Features/counter/counterSlice";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../GlobalRedux/store';
+import {
+  decrement,
+  increment,
+  incrementByAmount,
+} from '../GlobalRedux/Features/counter/counterSlice';
 
 export default function CounterReduxExample() {
   const count = useSelector((state: RootState) => state.counter.value);

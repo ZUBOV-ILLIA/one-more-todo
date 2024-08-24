@@ -1,5 +1,5 @@
-import { TodoType } from "@/app/types/definitions";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { TodoType } from '@/app/types/definitions';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface TodoStateInterface {
   todos: TodoType[];
@@ -35,9 +35,10 @@ const todoSlice = createSlice({
     },
     togglePanel(state, action: PayloadAction<boolean>) {
       state.isPanelVisible = action.payload;
-    }
-  }
+    },
+  },
 });
 
-export const { setTodos, addTodo, updateTodo, removeTodo, togglePanel } = todoSlice.actions;
+export const { setTodos, addTodo, updateTodo, removeTodo, togglePanel } =
+  todoSlice.actions;
 export default todoSlice.reducer;

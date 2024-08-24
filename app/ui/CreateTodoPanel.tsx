@@ -1,11 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
-import { addTodo, TodoStateInterface, togglePanel } from "../GlobalRedux/Features/todos/todoSlice";
-import axios from "axios";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addTodo,
+  TodoStateInterface,
+  togglePanel,
+} from '../GlobalRedux/Features/todos/todoSlice';
+import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect, useState } from "react";
-import { TodoType } from "../types/definitions";
-import { API } from "../lib/constants";
-import IconLoader from "./icons/IconLoader";
+import { useEffect, useState } from 'react';
+import { TodoType } from '../types/definitions';
+import { API } from '../lib/constants';
+import IconLoader from './icons/IconLoader';
 
 interface Props {
   todo: TodoType;
@@ -16,8 +20,10 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [isRequest, setIsRequest] = useState(false);
-  const isPanelVisible = useSelector((state: { todoReducer: TodoStateInterface }) => state.todoReducer.isPanelVisible);
-
+  const isPanelVisible = useSelector(
+    (state: { todoReducer: TodoStateInterface }) =>
+      state.todoReducer.isPanelVisible,
+  );
 
   useEffect(() => {
     if (isPanelVisible) setTitle('');
@@ -27,7 +33,8 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
     if (!title.trim() || isRequest) return;
 
     setIsRequest(true);
-    axios.post(`${API}/todos`, { title })
+    axios
+      .post(`${API}/todos`, { title })
       .then(res => {
         dispatch(addTodo(res.data));
         dispatch(togglePanel(false));
@@ -58,12 +65,10 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
         }}
       ></div>
 
-      <div className={`duration-300 ${isPanelVisible ? '' : 'translate-y-11 opacity-0 invisible'} fixed bottom-0 left-0 right-0 p-3 flex bg-neutral-800`}>
-        <input
-          type="checkbox"
-          className="mr-2"
-          disabled
-        />
+      <div
+        className={`duration-300 ${isPanelVisible ? '' : 'translate-y-11 opacity-0 invisible'} fixed bottom-0 left-0 right-0 p-3 flex bg-neutral-800`}
+      >
+        <input type="checkbox" className="mr-2" disabled />
         <input
           className="text-xl w-full rounded outline-none px-2 bg-neutral-800 text-slate-100"
           type="text"
@@ -71,7 +76,7 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
           value={title}
           placeholder="Добавить задачу"
           onChange={e => setTitle(e.target.value)}
-          onKeyUp={(e) => {
+          onKeyUp={e => {
             if (e.key === 'Enter') createTodo();
           }}
         />
@@ -80,8 +85,6 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
           onClick={createTodo}
         >
           {isRequest ? <IconLoader /> : '↑'}
-
-        
         </button>
       </div>
     </>

@@ -1,13 +1,13 @@
 export type TodoType = {
-  userId: number
-  id: string
-  title: string
-  completed: boolean
+  userId: number;
+  id: string;
+  title: string;
+  completed: boolean;
 };
 
 export type UserType = {
-  id: number
-  username: string
-  role: string
-  skill: string
+  id: number;
+  username: string;
+  role: string;
+  skill: string;
 };
