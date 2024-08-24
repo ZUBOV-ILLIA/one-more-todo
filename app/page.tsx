@@ -27,7 +27,6 @@ export default function Home() {
     (state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos,
   );
   const completedTodos = todos.filter(el => el.completed);
-  const lorem = '';
 
   useEffect(() => {
     axios
@@ -36,7 +35,7 @@ export default function Home() {
         dispatch(setTodos(res.data));
       })
       .catch(err => {
-        throw new Error(err);
+        console.error(err);
       });
   }, [dispatch]);
 
