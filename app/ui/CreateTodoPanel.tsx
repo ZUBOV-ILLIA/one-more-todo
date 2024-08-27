@@ -5,8 +5,7 @@ import {
   togglePanel,
 } from '../GlobalRedux/Features/todos/todoSlice';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TodoType } from '../types/definitions';
 import { API } from '../lib/constants';
 import IconLoader from './icons/IconLoader';
@@ -18,6 +17,7 @@ interface Props {
 
 export default function CreateTodoPanel({ todo, setTodo }: Props) {
   const dispatch = useDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('');
   const [isRequest, setIsRequest] = useState(false);
   const isPanelVisible = useSelector(
@@ -26,7 +26,16 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
   );
 
   useEffect(() => {
-    if (isPanelVisible) setTitle('');
+    if (isPanelVisible) {
+      setTitle('');
+
+      // Delay focusing to ensure the input is in the DOM
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
   }, [isPanelVisible]);
 
   async function createTodo() {
@@ -70,6 +79,7 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
       >
         <input type="checkbox" className="mr-2" disabled />
         <input
+          ref={inputRef}
           className="text-xl w-full rounded outline-none px-2 bg-neutral-800 text-slate-100"
           type="text"
           name="title"
