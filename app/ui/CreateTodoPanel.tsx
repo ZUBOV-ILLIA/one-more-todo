@@ -79,6 +79,7 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
       >
         <input type="checkbox" className="mr-2" disabled />
         <input
+          autoFocus
           ref={inputRef}
           className="text-xl w-full rounded outline-none px-2 bg-neutral-800 text-slate-100"
           type="text"
