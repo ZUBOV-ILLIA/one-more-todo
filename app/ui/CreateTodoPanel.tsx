@@ -58,7 +58,7 @@ export default function CreateTodoPanel({ todo, setTodo }: Props) {
   return (
     <>
       <div
-        className={`duration-300 cursor-pointer ${isPanelVisible ? 'opacity-0 invisible translate-x-11' : ''} fixed bottom-4 right-2 inline-flex justify-center items-center w-16 h-16  bg-indigo-700 text-black rounded-full text-4xl pb-1`}
+        className={`duration-300 cursor-pointer ${isPanelVisible ? 'opacity-0 invisible translate-x-11' : ''} absolute bottom-4 right-2 inline-flex justify-center items-center w-16 h-16  bg-indigo-700 text-black rounded-full text-4xl pb-1`}
         onClick={() => {
           dispatch(togglePanel(true));
         }}

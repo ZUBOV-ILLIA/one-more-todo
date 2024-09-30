@@ -27,37 +27,71 @@ export default function Home() {
     (state: { todoReducer: TodoStateInterface }) => state.todoReducer.todos,
   );
   const completedTodos = todos.filter(el => el.completed);
+  const [isError, setIsError] = useState(false);
+  const [isRequest, setIsRequest] = useState(false);
 
   useEffect(() => {
+    getTodos();
+  }, []);
+
+  function getTodos() {
+    if (isRequest) return;
+
+    setIsError(false);
+    setIsRequest(true);
+
     axios
       .get(`${API}/todos`)
       .then(res => {
         dispatch(setTodos(res.data));
+        setIsRequest(false);
       })
       .catch(err => {
         console.error(err);
+        setIsRequest(false);
+        setIsError(true);
       });
-  }, [dispatch]);
+  }
 
   return (
-    <main className="min-h-screen p-4 pb-24">
-      <CheckAllBtn />
-
-      {todos.length > 0 && (
-        <div className="todos-list">
-          {todos
-            .filter(el => !el.completed)
-            .map((todo, index) => (
-              <Todo key={todo.id} todo={todo} />
-            ))}
+    <main className="min-h-screen max-w-screen-sm mx-auto p-4 pb-24 relative bg-gradient-to-t from-black">
+      {isError && (
+        <div className="flex flex-col items-center mx-auto w-max mt-24">
+          <h3 className="mb-16">Что-то пошло не так</h3>
+          <button
+            className="bg-indigo-700 px-4 py-3 rounded"
+            onClick={getTodos}
+          >
+            Обновить
+          </button>
         </div>
       )}
 
-      <Accordeon
-        title={`Завершенные ${completedTodos.length}`}
-        className="mt-4"
-      >
-        {completedTodos.length > 0 && (
+      {isRequest && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div className="loader"></div>
+        </div>
+      )}
+
+      {todos.length > 0 && (
+        <>
+          <CheckAllBtn />
+
+          <div className="todos-list">
+            {todos
+              .filter(el => !el.completed)
+              .map((todo, index) => (
+                <Todo key={todo.id} todo={todo} />
+              ))}
+          </div>
+        </>
+      )}
+
+      {completedTodos.length > 0 && (
+        <Accordeon
+          title={`Завершенные ${completedTodos.length}`}
+          className="mt-4"
+        >
           <div>
             {completedTodos.map(todo => (
               <Todo key={todo.id} todo={todo} />
@@ -67,8 +101,8 @@ export default function Home() {
               <RemoveManyBtn />
             </div>
           </div>
-        )}
-      </Accordeon>
+        </Accordeon>
+      )}
 
       <CreateTodoPanel todo={todo} setTodo={setTodo} />
     </main>
