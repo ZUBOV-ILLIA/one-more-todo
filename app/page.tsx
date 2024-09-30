@@ -1,12 +1,13 @@
 'use client';
 
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { API } from './lib/constants';
 import { TodoType } from './types/definitions';
 import Todo from './ui/Todo';
 import Accordeon from './ui/Accordeon';
 import { useDispatch, useSelector } from 'react-redux';
+import Sortable from 'sortablejs';
 import {
   setTodos,
   TodoStateInterface,
@@ -16,6 +17,7 @@ import CheckAllBtn from './ui/CheckAllBtn';
 import RemoveManyBtn from './ui/icons/RemoveManyBtn';
 
 export default function Home() {
+  const todoListRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const [todo, setTodo] = useState<TodoType>({
     userId: 1,
@@ -33,6 +35,17 @@ export default function Home() {
   useEffect(() => {
     getTodos();
   }, []);
+
+  useEffect(() => {
+    if (todos.length > 0) {
+      const todoList = document.querySelector<HTMLElement>('#todoList');
+      if (todoListRef.current && !Sortable.get(todoListRef.current)) {
+        Sortable.create(todoListRef.current, {
+          animation: 150,
+        });
+      }
+    }
+  }, [todos]);
 
   function getTodos() {
     if (isRequest) return;
@@ -77,7 +90,7 @@ export default function Home() {
         <>
           <CheckAllBtn />
 
-          <div className="todos-list">
+          <div ref={todoListRef} id="todoList" className="todos-list">
             {todos
               .filter(el => !el.completed)
               .map((todo, index) => (
