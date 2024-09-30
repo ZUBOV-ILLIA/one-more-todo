@@ -40,6 +40,7 @@ export default function Home() {
     if (todos.length > 0) {
       if (todoListRef.current && !Sortable.get(todoListRef.current)) {
         Sortable.create(todoListRef.current, {
+          handle: '.todo-move-picker',
           animation: 150,
         });
       }

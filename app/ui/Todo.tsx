@@ -105,7 +105,7 @@ export default function Todo({ todo }: Props) {
         />
       </div>
 
-      <div className="whitespace-nowrap">
+      <div className="flex">
         <input
           type="checkbox"
           className=""
@@ -122,6 +122,14 @@ export default function Todo({ todo }: Props) {
           >
             Удалить
           </button>
+        )}
+
+        {!todo.completed && (
+          <div className="todo-move-picker flex ml-4 w-2 gap-0.5 h-full scale-150 cursor-move">
+            <div className="inline-block w-[1px] bg-neutral-700 h-full"></div>
+            <div className="inline-block w-[1px] bg-neutral-700 h-full"></div>
+            <div className="inline-block w-[1px] bg-neutral-700 h-full"></div>
+          </div>
         )}
       </div>
     </div>
