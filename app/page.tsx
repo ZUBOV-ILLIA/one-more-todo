@@ -38,7 +38,6 @@ export default function Home() {
 
   useEffect(() => {
     if (todos.length > 0) {
-      const todoList = document.querySelector<HTMLElement>('#todoList');
       if (todoListRef.current && !Sortable.get(todoListRef.current)) {
         Sortable.create(todoListRef.current, {
           animation: 150,
@@ -90,7 +89,7 @@ export default function Home() {
         <>
           <CheckAllBtn />
 
-          <div ref={todoListRef} id="todoList" className="todos-list">
+          <div ref={todoListRef} className="todos-list">
             {todos
               .filter(el => !el.completed)
               .map((todo, index) => (
